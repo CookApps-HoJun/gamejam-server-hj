@@ -1,21 +1,43 @@
-# STEP 1
-# 1
-FROM node:18-alpine AS builder
-# 2
+##############
+# Base Stage #
+##############
+FROM node:18-alpine as base
+
+# /app 디렉터리를 WORKDIR로 설정
 WORKDIR /app
-# 3
+
+# package 정의 파일 복사
+COPY package.json yarn.lock ./
+
+# package 설치
+RUN yarn --production
+
+#############
+# Dev Stage #
+#############
+FROM base as dev
+
+# 소스 복사
 COPY . .
-# 4
+RUN ls -l
+
 RUN yarn
-# 5
+
+# Nest Build
 RUN yarn build
 
-# STEP 2
-#6
+#############
+# Run Stage #
+#############
 FROM node:18-alpine
-#7
+
+# /app 디렉터리를 WORKDIR로 설정
 WORKDIR /app
-#8
-COPY --from=builder /app ./
-#9
-CMD ["yarn","start:dev"]
+
+# build phase에서 만든 배포용 js, 설치 한 modules, package 스크립트 복사
+COPY --from=base /app/package.json ./
+COPY --from=dev /app/dist ./dist
+COPY --from=base /app/node_modules ./node_modules
+
+# 실행할 명령어
+ENTRYPOINT ["node", "dist/main.js"]
