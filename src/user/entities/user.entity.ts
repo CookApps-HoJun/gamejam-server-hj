@@ -1,4 +1,4 @@
-import { Pvp } from 'src/pvp/entities/pvp.entity';
+import { Pvp } from "src/pvp/entities/pvp.entity";
 import {
   Entity,
   Column,
@@ -6,10 +6,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity({ name: 'user' })
+@Entity({ name: "user" })
 export class User {
   @PrimaryGeneratedColumn()
   uid: number;
@@ -17,7 +16,6 @@ export class User {
   @Column()
   deviceId: string;
 
-  @OneToOne((type) => Pvp)
   @CreateDateColumn()
   createdAt: Date;
 
