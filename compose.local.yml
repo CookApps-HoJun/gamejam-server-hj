@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 volumes:
   data:
@@ -20,11 +20,13 @@ services:
 
   server:
     image: server
-    container_name: "server"
+    container_name: 'server'
     build:
       context: ./
       dockerfile: Dockerfile
+    volumes:
+      - ./:/app
     ports:
-      - "3001:3001"
+      - '3001:3001'
     depends_on:
       - mysql
