@@ -1,15 +1,19 @@
-import { Controller, Get, Req } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { PvpService } from './pvp.service';
+import { Controller, Get, Req, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
+import { PvpService } from "./pvp.service";
 
-@Controller('pvp')
+@Controller("pvp")
 export class PvpController {
   constructor(private readonly pvpService: PvpService) {}
 
-  @Get('rank')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get("rank")
+  @ApiTags("pvp API")
   @ApiOperation({
-    summary: '유저 조회(전체)',
-    description: '전체유저를 조회한다.',
+    summary: "랭킹 조회",
+    description: "100위까지의 랭킹을 조회한다.",
   })
   getRank(@Req() req) {
     return this.pvpService.getRank();
