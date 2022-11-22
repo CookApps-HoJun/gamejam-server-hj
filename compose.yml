@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  data:
+
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      - MYSQL_ROOT_PASSWORD=abcd1234
+      - MYSQL_USER=bmserver
+      - MYSQL_DATABASE=bm_server
+      - MYSQL_PASSWORD=abcd1234
+    ports:
+      - 3306:3306
+    volumes:
+      - data:/data/db
+
+  server:
+    image: server
+    container_name: 'server'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mysql
