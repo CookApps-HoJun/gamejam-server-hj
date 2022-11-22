@@ -6,5 +6,7 @@ WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 
+RUN yarn --production
+
 # 실행할 명령어
 CMD ["yarn", "start:dev"]
