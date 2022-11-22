@@ -40,8 +40,8 @@ export class AuthController {
       1: {
         summary: "샘플 유저",
         description:
-          "deviceId를 보내면 token을 반환합니다. 그 후 모든 요청에 토큰이 필요합니다.",
-        value: { deviceId: "aaaa" } as LoginDto,
+          "deviceId를 보내면 uid와 token을 반환합니다. 그 후 모든 요청에 토큰이 필요합니다.",
+        value: { uid: 1, deviceId: "aaaa" } as LoginDto,
       },
     },
   })
