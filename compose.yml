@@ -17,6 +17,11 @@ services:
       - 3306:3306
     volumes:
       - data:/data/db
+    healthcheck:
+      test: '/usr/bin/mysql --user=root --password=abcd1234 --execute "SHOW DATABASES;"'
+      interval: 2s
+      timeout: 20s
+      retries: 10
 
   server:
     image: server
@@ -27,4 +32,5 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - mysql
+      mysql:
+        condition: healthcheck
