@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from "src/user/entities/user.entity";
 import {
   Entity,
   Column,
@@ -7,21 +7,24 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
-} from 'typeorm';
+} from "typeorm";
 
-@Entity({ name: 'pvp' })
+@Entity({ name: "pvp" })
 export class Pvp {
   @PrimaryGeneratedColumn()
   id: number;
 
   @OneToOne((type) => User, (user) => user.uid)
   @JoinColumn({
-    name: 'user',
+    name: "user",
   })
   user: User;
 
   @Column()
   score: number;
+
+  @Column({ nullable: true })
+  yesterdayRank: number;
 
   @CreateDateColumn()
   createdAt: Date;

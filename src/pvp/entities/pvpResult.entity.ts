@@ -1,23 +1,30 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from "src/user/entities/user.entity";
 import {
   Entity,
   Column,
-  PrimaryColumn,
+  JoinColumn,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToMany,
-} from 'typeorm';
+  ManyToOne,
+  AfterInsert,
+} from "typeorm";
 
-@Entity({ name: 'pvpResult' })
+@Entity({ name: "pvpResult" })
 export class PvpResult {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToMany(() => User, (user) => user.uid)
-  uid: User;
+  @ManyToOne(() => User, (user) => user.uid)
+  @JoinColumn({
+    name: "user",
+  })
+  user: User;
 
-  @ManyToMany(() => User, (user) => user.uid)
+  @ManyToOne(() => User, (user) => user.uid)
+  @JoinColumn({
+    name: "enemy",
+  })
   enemy: User;
 
   @Column()
