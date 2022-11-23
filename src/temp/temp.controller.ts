@@ -51,6 +51,6 @@ export class TempController {
   async findOne(@Param("uid") uid: number, @Param("type") type: string) {
     const temp = await this.tempService.findOne(uid, type);
 
-    return JSON.parse(temp.data);
+    return temp?.data ? JSON.parse(temp.data) : null;
   }
 }

@@ -17,7 +17,7 @@ export class Temp {
   @PrimaryColumn()
   type: string;
 
-  @Column()
+  @Column({ nullable: true })
   data: string;
 
   @CreateDateColumn()
