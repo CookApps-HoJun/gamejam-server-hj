@@ -51,4 +51,10 @@ export class PvpService {
       pAfter: userPbefore + Math.round(k * (w - we)),
     };
   }
+
+  async updateScore(uid, score) {
+    const pvp = await this.pvpRepo.findOneBy({ user: { uid } });
+
+    return await this.pvpRepo.save({ ...pvp, score });
+  }
 }
