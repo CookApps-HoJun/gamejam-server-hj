@@ -18,10 +18,7 @@ export class PvpService {
   }
 
   async getEnemy(uid: number) {
-    console.log(await this.pvpRepo.findOneBy({ user: { uid } }));
-
     const userScore = (await this.pvpRepo.findOneBy({ user: { uid } })).score;
-    console.log({ userScore });
 
     const upperBound = userScore * 0.05;
 
@@ -49,6 +46,9 @@ export class PvpService {
     const w = result; // 유저 기준 경기결과 (승리: 1, 패배: 0)
     const we = 1 / (10 ** ((enemyPbefore - userPbefore) / 600) + 1); // 예측된 경기 결과
 
-    return userPbefore + Math.round(k * (w - we));
+    return {
+      pBefore: userPbefore,
+      pAfter: userPbefore + Math.round(k * (w - we)),
+    };
   }
 }
