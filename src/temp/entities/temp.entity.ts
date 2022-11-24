@@ -7,9 +7,9 @@ import {
   UpdateDateColumn,
   Unique,
   PrimaryColumn,
-} from "typeorm";
+} from 'typeorm';
 
-@Entity({ name: "temp" })
+@Entity({ name: 'temp' })
 export class Temp {
   @PrimaryColumn()
   uid: number;
@@ -17,7 +17,7 @@ export class Temp {
   @PrimaryColumn()
   type: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'mediumtext' })
   data: string;
 
   @CreateDateColumn()
