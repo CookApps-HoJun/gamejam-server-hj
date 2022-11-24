@@ -1,11 +1,11 @@
-import { Pvp } from "src/pvp/entities/pvp.entity";
+import { Pvp } from 'src/pvp/entities/pvp.entity';
 import {
   DataSource,
   EntitySubscriberInterface,
   EventSubscriber,
   InsertEvent,
-} from "typeorm";
-import { User } from "./entities/user.entity";
+} from 'typeorm';
+import { User } from './entities/user.entity';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
@@ -19,10 +19,13 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
 
   async afterInsert(event: InsertEvent<User>) {
     const user = event.entity;
-    console.log(`AFTER USER INSERTED: `, event.entity);
     await event.manager.getRepository(Pvp).save({
       user,
-      score: 1000,
+      score:
+        1000 +
+        (user.deviceId.includes('dummy')
+          ? parseInt(user.deviceId.split('#')[1]) * 2
+          : 0),
       yesterdayRank: null,
     });
   }

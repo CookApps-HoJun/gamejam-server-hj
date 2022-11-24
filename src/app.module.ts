@@ -8,7 +8,13 @@ import { dbConfig } from './config/db.config';
 import { PvpModule } from './pvp/pvp.module';
 import { TempModule } from './temp/temp.module';
 @Module({
-  imports: [TypeOrmModule.forRoot(dbConfig), AuthModule, UserModule, PvpModule, TempModule],
+  imports: [
+    TypeOrmModule.forRoot(dbConfig),
+    AuthModule,
+    UserModule,
+    PvpModule,
+    TempModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
