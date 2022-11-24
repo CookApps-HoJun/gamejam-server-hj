@@ -22,7 +22,7 @@ export class PvpController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Post('start')
+  @Get('start')
   @ApiOperation({
     summary: 'pvp 시작',
     description: 'pvp 시작 , 매칭 상대 리턴',
