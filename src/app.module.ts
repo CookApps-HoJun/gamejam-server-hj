@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbConfig } from './config/db.config';
 import { PvpModule } from './pvp/pvp.module';
 import { TempModule } from './temp/temp.module';
+import { VersionSpecModule } from './version-spec/version-spec.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
@@ -14,6 +15,7 @@ import { TempModule } from './temp/temp.module';
     UserModule,
     PvpModule,
     TempModule,
+    VersionSpecModule,
   ],
   controllers: [AppController],
   providers: [AppService],
