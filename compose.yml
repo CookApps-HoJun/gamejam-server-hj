@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 volumes:
   data:
@@ -17,6 +17,7 @@ services:
       - 3306:3306
     volumes:
       - data:/data/db
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
@@ -26,12 +27,12 @@ services:
 
   server:
     image: server
-    container_name: "server"
+    container_name: 'server'
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - '3001:3001'
     depends_on:
       mysql:
         condition: service_healthy
