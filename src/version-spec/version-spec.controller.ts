@@ -29,7 +29,7 @@ export class VersionSpecController {
     @Param('version') version: string,
   ) {
     const result = await this.versionSpecService.getSpec(table, +version);
-    return { ...result, data: JSON.parse(result.data) };
+    return { [result.type]: JSON.parse(result.data) };
   }
 
   @Post('/spec')
