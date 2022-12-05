@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 volumes:
   data:
@@ -13,6 +13,7 @@ services:
       - MYSQL_USER=bmserver
       - MYSQL_DATABASE=bm_server
       - MYSQL_PASSWORD=abcd1234
+      - TZ=Asia/Seoul
     ports:
       - 3306:3306
     volumes:
@@ -20,13 +21,13 @@ services:
 
   server:
     image: server
-    container_name: "server"
+    container_name: 'server'
     build:
       context: ./
       dockerfile: Dockerfile.local
     volumes:
       - ./:/app
     ports:
-      - "3001:3001"
+      - '3001:3001'
     depends_on:
       - mysql
