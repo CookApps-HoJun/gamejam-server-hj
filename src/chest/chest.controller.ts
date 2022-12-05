@@ -24,8 +24,8 @@ export class ChestController {
   @ApiBearerAuth()
   @Get('open/:id')
   @ApiOperation({
-    summary: '상자 오픈123',
-    description: '상자오픈',
+    summary: '상자 오픈',
+    description: '상자오픈 id: (10001, 20001, 30001, 40001)',
   })
   async open(@Param('id') id: string, @Req() req) {
     const { uid } = req.user;

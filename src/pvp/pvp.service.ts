@@ -14,7 +14,13 @@ export class PvpService {
   ) {}
 
   async getRank() {
-    return await this.pvpRepo.find({ relations: ['user'], take: 100 });
+    return await this.pvpRepo.find({
+      relations: ['user'],
+      take: 100,
+      order: {
+        score: 'DESC',
+      },
+    });
   }
 
   async getEnemy(uid: number) {

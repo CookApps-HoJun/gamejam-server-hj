@@ -7,5 +7,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   nickname?: string;
   lang?: string;
   level?: number;
+  presetId?: number;
   exp?: number;
 }

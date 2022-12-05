@@ -49,12 +49,13 @@ export class UserController {
     return this.userService.findOne({ uid });
   }
 
-  @Patch(':uid')
+  @Patch()
   @ApiOperation({
     summary: '유저 수정',
     description: '유저를 수정한다.',
   })
-  update(@Param('uid') uid: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    const { uid } = req.user;
     return this.userService.update(+uid, updateUserDto);
   }
 

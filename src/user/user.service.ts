@@ -21,12 +21,15 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(loginDto: LoginDto) {
-    return this.userRepo.findOne({ where: loginDto });
+  async findOne(loginDto: LoginDto) {
+    return await this.userRepo.findOne({
+      where: loginDto,
+      relations: ['pvp', 'skills', 'presets'],
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(uid: number, updateUserDto: UpdateUserDto) {
+    return this.userRepo.save({ ...updateUserDto, uid });
   }
 
   remove(id: number) {

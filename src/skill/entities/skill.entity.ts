@@ -14,14 +14,15 @@ import {
 
 @Entity({ name: 'skill' })
 export class Skill {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn()
   id: number;
 
-  @ManyToOne((type) => User, (user) => user.uid)
-  user: User;
+  @PrimaryColumn()
+  uid: number;
 
-  @Column()
-  skillId: number;
+  @ManyToOne((type) => User, (user) => user.presets)
+  @JoinColumn({ name: 'uid' })
+  user: User;
 
   @Column()
   level: number;
@@ -29,9 +30,9 @@ export class Skill {
   @Column()
   amount: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  // @CreateDateColumn()
+  // createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }

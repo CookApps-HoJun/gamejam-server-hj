@@ -12,6 +12,7 @@ import { SkillModule } from './skill/skill.module';
 import { CurrencyModule } from './currency/currency.module';
 import { CharacterModule } from './character/character.module';
 import { ChestModule } from './chest/chest.module';
+import { PresetModule } from './preset/preset.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
@@ -24,6 +25,7 @@ import { ChestModule } from './chest/chest.module';
     CurrencyModule,
     CharacterModule,
     ChestModule,
+    PresetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

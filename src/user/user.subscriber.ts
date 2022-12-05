@@ -8,6 +8,8 @@ import {
   InsertEvent,
 } from 'typeorm';
 import { User } from './entities/user.entity';
+import { Skill } from 'src/skill/entities/skill.entity';
+import { Preset } from 'src/preset/entities/preset.entity';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
@@ -44,7 +46,20 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
       .getRepository(Chest)
       .insert([10001, 20001, 30001, 40001].map((id) => ({ user, id })));
     // 스킬데이터 생성 (최초는 없고 획득시 얻는걸로) 추후 최초 level, amount 모두 0으로 들고있을지 고민
-    // event.manager.getRepository(Skill).save();
+    await event.manager.getRepository(Skill).save([
+      { user, id: 1, level: 1, amount: 0 },
+      { user, id: 2, level: 1, amount: 0 },
+      { user, id: 5, level: 1, amount: 0 },
+      { user, id: 6, level: 1, amount: 0 },
+      { user, id: 8, level: 1, amount: 0 },
+      { user, id: 9, level: 1, amount: 0 },
+    ]);
+    await event.manager.getRepository(Preset).save([
+      { user, id: 1, skills: '[1,2,5,6,8,9]' },
+      { user, id: 2, skills: '[1,2,5,6,8,9]' },
+      { user, id: 3, skills: '[1,2,5,6,8,9]' },
+    ]);
+
     // 캐릭터데이터 생성 (최초는 없고 획득시 얻는걸로) 추후 최초 level, amount 모두 0으로 들고있을지 고민
     // event.manager.getRepository(Character).save();
   }
