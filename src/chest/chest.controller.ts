@@ -20,30 +20,15 @@ import { UpdateChestDto } from './dto/update-chest.dto';
 export class ChestController {
   constructor(private readonly chestService: ChestService) {}
 
-  @Post()
-  create(@Body() createChestDto: CreateChestDto) {
-    return this.chestService.create(createChestDto);
-  }
-
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get('open/:id')
   @ApiOperation({
-    summary: '상자 오픈',
+    summary: '상자 오픈123',
     description: '상자오픈',
   })
-  open(@Param('id') id: string, @Req() req) {
+  async open(@Param('id') id: string, @Req() req) {
     const { uid } = req.user;
-    return this.chestService.open(+id, uid);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.chestService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChestDto: UpdateChestDto) {
-    return this.chestService.update(+id, updateChestDto);
+    return await this.chestService.open(+id, uid);
   }
 }

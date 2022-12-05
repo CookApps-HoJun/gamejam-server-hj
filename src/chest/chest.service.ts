@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateChestDto } from './dto/create-chest.dto';
@@ -143,37 +143,38 @@ export class ChestService {
   async open(id, uid) {
     const chest = await this.chestRepo.findBy({ id, uid });
 
-    if (!chest.length) {
-      return false;
-    }
-
     const openTime = chest[0].openTime?.valueOf() / 1000;
     const now = Date.now() / 1000;
+    if (!chest.length) {
+      throw new HttpException('DB Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    if (chest[0].amount <= 0) {
+      throw new HttpException('Not Enough', HttpStatus.BAD_REQUEST);
+    }
+
+    if (now >= openTime + chestInfo[id] && !openTime) {
+      throw new HttpException('OpenTime not yet', HttpStatus.BAD_REQUEST);
+    }
 
     // 처음이거나(오픈타임이 없거나) 현재시간 >= 마지막 오픈 시간 + 여는데 걸리는 시간
-    if (!openTime || now >= openTime + chestInfo[id]) {
-      return openChest(id);
-    }
-    return 'error';
+    const { createdAt, updatedAt, ...updated } = await this.chestRepo.save({
+      ...chest[0],
+      amount: chest[0].amount - 1,
+      openTime: new Date(),
+    });
+
+    return {
+      rewardSkills: openChest(id),
+      updated,
+    };
   }
 
-  create(createChestDto: CreateChestDto) {
-    return 'This action adds a new chest';
-  }
-
-  findAll() {
-    return `This action returns all chest`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} chest`;
-  }
-
-  update(id: number, updateChestDto: UpdateChestDto) {
-    return `This action updates a #${id} chest`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} chest`;
+  async get(id, uid) {
+    const chest = await this.chestRepo.findBy({ id, uid });
+    return await this.chestRepo.save({
+      ...chest[0],
+      amount: chest[0].amount + 1,
+    });
   }
 }
