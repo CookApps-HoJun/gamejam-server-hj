@@ -15,6 +15,8 @@ export class AppService implements OnApplicationBootstrap {
   }
 
   async onApplicationBootstrap(): Promise<void> {
+    console.log('onApplicationBootstrap');
+
     const [result] = await this.entityManager
       .getRepository(User)
       .createQueryBuilder('user')
@@ -29,7 +31,7 @@ export class AppService implements OnApplicationBootstrap {
         .insert()
         .into(User)
         .values(
-          [...Array(1000).keys()].map((n) => ({
+          [...Array(10).keys()].map((n) => ({
             deviceId: `dummy#${n}`,
           })),
         )

@@ -2,33 +2,33 @@ import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
   Column,
-  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToOne,
+  PrimaryColumn,
+  JoinColumn,
   RelationId,
+  ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'pvp' })
-export class Pvp {
-  @PrimaryGeneratedColumn()
+@Entity({ name: 'chest' })
+export class Chest {
+  @PrimaryColumn()
   id: number;
 
-  @RelationId((pvp: Pvp) => pvp.user)
+  @PrimaryColumn()
   uid: number;
 
-  @OneToOne((type) => User, (user) => user.uid)
-  @JoinColumn({
-    name: 'uid',
-  })
+  @ManyToOne((type) => User, (user) => user.chests)
+  @JoinColumn({ name: 'uid' })
   user: User;
 
-  @Column()
-  score: number;
+  @Column({ default: 0 })
+  amount: number;
 
   @Column({ nullable: true })
-  yesterdayRank: number;
+  openTime: Date;
 
   @CreateDateColumn()
   createdAt: Date;

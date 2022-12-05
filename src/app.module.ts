@@ -8,6 +8,10 @@ import { dbConfig } from './config/db.config';
 import { PvpModule } from './pvp/pvp.module';
 import { TempModule } from './temp/temp.module';
 import { VersionSpecModule } from './version-spec/version-spec.module';
+import { SkillModule } from './skill/skill.module';
+import { CurrencyModule } from './currency/currency.module';
+import { CharacterModule } from './character/character.module';
+import { ChestModule } from './chest/chest.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
@@ -16,6 +20,10 @@ import { VersionSpecModule } from './version-spec/version-spec.module';
     PvpModule,
     TempModule,
     VersionSpecModule,
+    SkillModule,
+    CurrencyModule,
+    CharacterModule,
+    ChestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
