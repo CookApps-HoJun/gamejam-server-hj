@@ -9,13 +9,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ChestService } from './chest.service';
 import { CreateChestDto } from './dto/create-chest.dto';
 import { UpdateChestDto } from './dto/update-chest.dto';
 
 @Controller('chest')
+@ApiTags('상자 API')
 export class ChestController {
   constructor(private readonly chestService: ChestService) {}
 
@@ -44,10 +45,5 @@ export class ChestController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateChestDto: UpdateChestDto) {
     return this.chestService.update(+id, updateChestDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.chestService.remove(+id);
   }
 }

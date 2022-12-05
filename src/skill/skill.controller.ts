@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('skill')
+@ApiTags('스킬 API')
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
@@ -25,10 +35,5 @@ export class SkillController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
     return this.skillService.update(+id, updateSkillDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.skillService.remove(+id);
   }
 }
