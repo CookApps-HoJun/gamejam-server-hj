@@ -31,7 +31,7 @@ export class AppService implements OnApplicationBootstrap {
         .insert()
         .into(User)
         .values(
-          [...Array(10).keys()].map((n) => ({
+          [...Array(1000).keys()].map((n) => ({
             deviceId: `dummy#${n}`,
             nickname: `dummy#${n}`,
           })),
