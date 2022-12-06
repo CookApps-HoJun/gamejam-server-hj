@@ -1,5 +1,6 @@
 import { Character } from 'src/character/entities/character.entity';
 import { Chest } from 'src/chest/entities/chest.entity';
+import { Currency } from 'src/currency/entities/currency.entity';
 import { Preset } from 'src/preset/entities/preset.entity';
 import { Pvp } from 'src/pvp/entities/pvp.entity';
 import { Skill } from 'src/skill/entities/skill.entity';
@@ -39,6 +40,9 @@ export class User {
 
   @OneToOne(() => Pvp, (pvp) => pvp.user, { cascade: true })
   pvp: Pvp;
+
+  @OneToOne(() => Currency, (currency) => currency.user, { cascade: true })
+  currency: Currency;
 
   @OneToMany(() => Character, (character) => character.user, {
     cascade: true,

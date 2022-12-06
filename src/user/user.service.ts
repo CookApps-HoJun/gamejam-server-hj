@@ -24,7 +24,7 @@ export class UserService {
   async findOne(loginDto: LoginDto) {
     return await this.userRepo.findOne({
       where: loginDto,
-      relations: ['pvp', 'skills', 'presets'],
+      relations: ['currency', 'pvp', 'presets.skills', 'skills'],
     });
   }
 

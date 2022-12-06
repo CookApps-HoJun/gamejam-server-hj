@@ -15,6 +15,7 @@ import {
 export class Currency {
   @PrimaryColumn()
   uid: number;
+
   @OneToOne((type) => User)
   @JoinColumn({
     name: 'uid',
@@ -30,9 +31,9 @@ export class Currency {
   @Column()
   key: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  // @CreateDateColumn()
+  // createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  // @UpdateDateColumn()
+  // updatedAt: Date;
 }

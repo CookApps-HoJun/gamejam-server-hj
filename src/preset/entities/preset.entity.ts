@@ -28,7 +28,7 @@ export class Preset {
   //   @Column({ type: 'json' })
   //   skills: string;
 
-  @ManyToMany((type) => Skill, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToMany((type) => Skill, { cascade: true })
   @JoinTable({
     name: 'preset_skill',
     // joinColumn: { name: "userId", referencedColumnName: "id" },
