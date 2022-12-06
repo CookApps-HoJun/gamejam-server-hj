@@ -29,6 +29,7 @@ export class PvpService {
     const upperBound = userScore * 0.05;
 
     let userPool = await this.pvpRepo.find({
+      relations: ['user'],
       where: {
         score: Between(userScore - upperBound, userScore + upperBound),
         user: Not(uid),
@@ -53,18 +54,35 @@ export class PvpService {
       `);
 
       userPool = await this.pvpRepo.find({
+        relations: ['user'],
         where: {
           user: Not(uid),
         },
         skip: Math.max(rank - 5, 0),
         take: 10,
       });
-      console.log(rank, userPool.length);
     }
 
     const randomNumber = Math.floor(Math.random() * userPool.length);
 
-    return userPool[randomNumber];
+    const enemy = userPool[randomNumber];
+
+    const { uid: enemyId, presetId } = enemy.user;
+
+    const [{ skills }] = await this.pvpRepo.manager.query(`
+        SELECT skills
+        FROM preset
+        WHERE uid = ${enemyId}
+        AND id = ${presetId};
+      `);
+
+    return {
+      ...enemy,
+      user: {
+        ...enemy.user,
+        skills: JSON.parse(skills),
+      },
+    };
   }
 
   async calcScore(user, enemy, result) {

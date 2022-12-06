@@ -29,10 +29,4 @@ export class Pvp {
 
   @Column({ nullable: true })
   yesterdayRank: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
