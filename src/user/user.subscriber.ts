@@ -10,6 +10,7 @@ import {
 import { User } from './entities/user.entity';
 import { Skill } from 'src/skill/entities/skill.entity';
 import { Preset } from 'src/preset/entities/preset.entity';
+import { PresetSkill } from 'src/preset/entities/preset-skill.entity';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
@@ -70,17 +71,67 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
       {
         user,
         id: 1,
-        skills: [s1, s2, s3, s4, s5, s6],
       },
       {
         user,
         id: 2,
-        skills: [s1, s2, s3, s4, s5, s6],
       },
       {
         user,
         id: 3,
-        skills: [s1, s2, s3, s4, s5, s6],
+      },
+    ]);
+
+    const { uid } = user;
+
+    await event.manager.getRepository(PresetSkill).save([
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s1,
+        order: 1,
+      },
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s2,
+        order: 2,
+      },
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s3,
+        order: 3,
+      },
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s4,
+        order: 4,
+      },
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s5,
+        order: 5,
+      },
+      {
+        preset: {
+          user,
+          id: 1,
+        },
+        skill: s6,
+        order: 6,
       },
     ]);
 

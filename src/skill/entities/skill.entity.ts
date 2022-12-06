@@ -1,3 +1,4 @@
+import { PresetSkill } from 'src/preset/entities/preset-skill.entity';
 import { Preset } from 'src/preset/entities/preset.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -13,6 +14,7 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 
 @Entity({ name: 'skill' })
@@ -33,10 +35,8 @@ export class Skill {
   @Column()
   amount: number;
 
-  @ManyToMany((type) => Preset, (preset) => preset.skills, {
-    onDelete: 'CASCADE',
-  })
-  preset: Preset[];
+  @OneToMany((type) => PresetSkill, (presetSkill) => presetSkill.skill)
+  presetSkills: PresetSkill[];
 
   // @CreateDateColumn()
   // createdAt: Date;

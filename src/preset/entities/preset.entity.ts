@@ -10,6 +10,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
+import { PresetSkill } from './preset-skill.entity';
 
 @Entity('preset')
 export class Preset {
@@ -34,5 +35,6 @@ export class Preset {
     // joinColumn: { name: "userId", referencedColumnName: "id" },
     // inverseJoinColumn: { name: "roleId" }
   })
-  skills: Skill[];
+  @OneToMany((type) => PresetSkill, (presetSkill) => presetSkill.preset)
+  presetSkills: PresetSkill[];
 }

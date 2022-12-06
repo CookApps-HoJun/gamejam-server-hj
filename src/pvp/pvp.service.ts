@@ -85,22 +85,23 @@ export class PvpService {
 
     console.log('b');
 
-    const [{ skills }] = await this.presetRepo.find({
-      relations: ['skills'],
+    const [{ presetSkills }] = await this.presetRepo.find({
+      relations: ['skill'],
       where: {
         id: presetId,
         uid: enemyId,
       },
     });
+    console.log(presetSkills);
 
     return {
       ...enemy,
       user: {
         ...enemy.user,
-        skills: skills.map((s) => {
-          const { uid, amount, ...result } = s;
-          return result;
-        }),
+        // skills: skills.map((s) => {
+        //   const { uid, amount, ...result } = s;
+        //   return result;
+        // }),
       },
     };
   }

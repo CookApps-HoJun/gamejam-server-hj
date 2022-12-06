@@ -32,7 +32,7 @@ export class PresetService {
     return this.presetRepo.save({
       uid,
       id,
-      skills: [],
+      skills: skills.map((s) => ({ id: s, uid })),
     });
   }
 

@@ -14,7 +14,7 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return await this.userRepo.save({ ...createUserDto });
+    return await this.userRepo.save({ ...createUserDto, nickname: 'guest' });
   }
 
   findAll() {
@@ -24,7 +24,7 @@ export class UserService {
   async findOne(loginDto: LoginDto) {
     return await this.userRepo.findOne({
       where: loginDto,
-      relations: ['currency', 'pvp', 'presets.skills', 'skills'],
+      relations: ['currency', 'pvp', 'presets', 'skills'],
     });
   }
 
