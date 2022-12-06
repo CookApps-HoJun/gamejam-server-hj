@@ -76,32 +76,26 @@ export class PvpService {
 
     const { uid: enemyId, presetId } = enemy.user;
 
-    // const [{ skills }] = await this.pvpRepo.manager.query(`
-    //     SELECT skills
-    //     FROM preset
-    //     WHERE uid = ${enemyId}
-    //     AND id = ${presetId};
-    //   `);
-
-    console.log('b');
-
     const [{ presetSkills }] = await this.presetRepo.find({
-      relations: ['skill'],
+      relations: ['presetSkills.skill'],
       where: {
         id: presetId,
         uid: enemyId,
       },
     });
-    console.log(presetSkills);
+
+    const skills = presetSkills
+      .sort(({ order: a }, { order: b }) => a - b)
+      .map((s) => {
+        const { uid, amount, ...result } = s.skill;
+        return result;
+      });
 
     return {
       ...enemy,
       user: {
         ...enemy.user,
-        // skills: skills.map((s) => {
-        //   const { uid, amount, ...result } = s;
-        //   return result;
-        // }),
+        skills,
       },
     };
   }

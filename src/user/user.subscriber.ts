@@ -82,58 +82,23 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
       },
     ]);
 
-    const { uid } = user;
+    const presetSkill = [1, 2, 3]
+      .map((i) =>
+        [1, 2, 5, 6, 8, 9].map((s, j) => ({
+          preset: {
+            user,
+            id: i,
+          },
+          skill: {
+            id: s,
+            user,
+          },
+          order: j + 1,
+        })),
+      )
+      .flat();
 
-    await event.manager.getRepository(PresetSkill).save([
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s1,
-        order: 1,
-      },
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s2,
-        order: 2,
-      },
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s3,
-        order: 3,
-      },
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s4,
-        order: 4,
-      },
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s5,
-        order: 5,
-      },
-      {
-        preset: {
-          user,
-          id: 1,
-        },
-        skill: s6,
-        order: 6,
-      },
-    ]);
+    await event.manager.getRepository(PresetSkill).save(presetSkill);
 
     // 캐릭터데이터 생성 (최초는 없고 획득시 얻는걸로) 추후 최초 level, amount 모두 0으로 들고있을지 고민
     // event.manager.getRepository(Character).save();

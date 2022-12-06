@@ -15,13 +15,29 @@ import { Preset } from './preset.entity';
 
 @Entity('preset_skill')
 export class PresetSkill {
-  @PrimaryGeneratedColumn()
-  id: number;
+  // @PrimaryGeneratedColumn()
+  // id: number;
+
+  @PrimaryColumn()
+  skillId: number;
+
+  @PrimaryColumn()
+  skillUid: number;
+
+  @PrimaryColumn()
+  presetId: number;
+
+  @PrimaryColumn()
+  presetUid: number;
 
   @ManyToOne((type) => Preset)
+  // @JoinColumn({ name: 'presetId' })
+  // @JoinColumn({ name: 'puid' })
   preset: Preset;
 
   @ManyToOne((type) => Skill)
+  // @JoinColumn({ name: 'skillId' })
+  // @JoinColumn({ name: 'suid' })
   skill: Skill;
 
   @Column()

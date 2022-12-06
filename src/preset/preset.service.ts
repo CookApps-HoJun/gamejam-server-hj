@@ -4,13 +4,14 @@ import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePresetDto } from './dto/create-preset.dto';
 import { UpdatePresetDto } from './dto/update-preset.dto';
+import { PresetSkill } from './entities/preset-skill.entity';
 import { Preset } from './entities/preset.entity';
 
 @Injectable()
 export class PresetService {
   constructor(
-    @InjectRepository(Preset)
-    private presetRepo: Repository<Preset>,
+    @InjectRepository(PresetSkill)
+    private presetSkillRepo: Repository<PresetSkill>,
     @InjectRepository(User)
     private userRepo: Repository<User>,
   ) {}
@@ -27,13 +28,30 @@ export class PresetService {
     return `This action returns a #${id} preset`;
   }
 
-  async update(uid: number, id: number, updatePresetDto: UpdatePresetDto) {
+  async update(id: number, uid: number, updatePresetDto: UpdatePresetDto) {
     const { skills } = updatePresetDto;
-    return this.presetRepo.save({
-      uid,
-      id,
-      skills: skills.map((s) => ({ id: s, uid })),
+
+    const oldPreset = await this.presetSkillRepo.find({
+      where: {
+        preset: { id, uid },
+      },
     });
+
+    await this.presetSkillRepo.remove(oldPreset);
+
+    const newPreset = skills.map((s, i) => ({
+      preset: {
+        user: { uid },
+        id,
+      },
+      skill: {
+        id: s,
+        user: { uid },
+      },
+      order: i + 1,
+    }));
+
+    return this.presetSkillRepo.save(newPreset);
   }
 
   remove(id: number) {

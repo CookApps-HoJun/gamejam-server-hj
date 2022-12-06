@@ -4,9 +4,10 @@ import { PresetController } from './preset.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Preset } from './entities/preset.entity';
 import { User } from 'src/user/entities/user.entity';
+import { PresetSkill } from './entities/preset-skill.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Preset, User])],
+  imports: [TypeOrmModule.forFeature([PresetSkill, User])],
   controllers: [PresetController],
   providers: [PresetService],
 })
