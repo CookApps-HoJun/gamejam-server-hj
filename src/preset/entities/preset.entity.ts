@@ -4,6 +4,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -18,10 +19,20 @@ export class Preset {
   @PrimaryColumn()
   uid: number;
 
-  @ManyToOne((type) => User, (user) => user.presets)
+  @ManyToOne((type) => User, (user) => user.presets, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'uid' })
   user: User;
 
-  @Column({ type: 'json' })
-  skills: string;
+  //   @Column({ type: 'json' })
+  //   skills: string;
+
+  @ManyToMany((type) => Skill, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'preset_skill',
+    // joinColumn: { name: "userId", referencedColumnName: "id" },
+    // inverseJoinColumn: { name: "roleId" }
+  })
+  skills: Skill[];
 }

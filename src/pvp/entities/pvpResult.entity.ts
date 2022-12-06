@@ -15,13 +15,13 @@ export class PvpResult {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.uid)
+  @ManyToOne(() => User, (user) => user.uid, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'uid',
   })
   user: User;
 
-  @ManyToOne(() => User, (user) => user.uid)
+  @ManyToOne(() => User, (user) => user.uid, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'enemyUid',
   })

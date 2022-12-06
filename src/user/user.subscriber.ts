@@ -46,18 +46,42 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
       .getRepository(Chest)
       .insert([10001, 20001, 30001, 40001].map((id) => ({ user, id })));
     // 스킬데이터 생성 (최초는 없고 획득시 얻는걸로) 추후 최초 level, amount 모두 0으로 들고있을지 고민
-    await event.manager.getRepository(Skill).save([
-      { user, id: 1, level: 1, amount: 0 },
-      { user, id: 2, level: 1, amount: 0 },
-      { user, id: 5, level: 1, amount: 0 },
-      { user, id: 6, level: 1, amount: 0 },
-      { user, id: 8, level: 1, amount: 0 },
-      { user, id: 9, level: 1, amount: 0 },
-    ]);
+    const s1 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 1, level: 1, amount: 0 });
+    const s2 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 2, level: 1, amount: 0 });
+    const s3 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 5, level: 1, amount: 0 });
+    const s4 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 6, level: 1, amount: 0 });
+    const s5 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 8, level: 1, amount: 0 });
+    const s6 = await event.manager
+      .getRepository(Skill)
+      .save({ user, id: 9, level: 1, amount: 0 });
+
+    // 프리셋설정
     await event.manager.getRepository(Preset).save([
-      { user, id: 1, skills: '[1,2,5,6,8,9]' },
-      { user, id: 2, skills: '[1,2,5,6,8,9]' },
-      { user, id: 3, skills: '[1,2,5,6,8,9]' },
+      {
+        user,
+        id: 1,
+        skills: [s1, s2, s3, s4, s5, s6],
+      },
+      {
+        user,
+        id: 2,
+        skills: [s1, s2, s3, s4, s5, s6],
+      },
+      {
+        user,
+        id: 3,
+        skills: [s1, s2, s3, s4, s5, s6],
+      },
     ]);
 
     // 캐릭터데이터 생성 (최초는 없고 획득시 얻는걸로) 추후 최초 level, amount 모두 0으로 들고있을지 고민

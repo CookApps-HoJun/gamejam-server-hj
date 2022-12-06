@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Preset } from 'src/preset/entities/preset.entity';
 import { In, Between, Repository, Not } from 'typeorm';
 import { Pvp } from './entities/pvp.entity';
 import { PvpResult } from './entities/pvpResult.entity';
@@ -9,6 +10,8 @@ export class PvpService {
   constructor(
     @InjectRepository(Pvp)
     private pvpRepo: Repository<Pvp>,
+    @InjectRepository(Preset)
+    private presetRepo: Repository<Preset>,
     @InjectRepository(PvpResult)
     private pvpResultRepo: Repository<PvpResult>,
   ) {}
@@ -24,6 +27,10 @@ export class PvpService {
   }
 
   async getEnemy(uid: number) {
+    console.log('a');
+
+    console.log(await this.pvpRepo.findOneBy({ user: { uid } }));
+
     const userScore = (await this.pvpRepo.findOneBy({ user: { uid } })).score;
 
     const upperBound = userScore * 0.05;
@@ -69,18 +76,31 @@ export class PvpService {
 
     const { uid: enemyId, presetId } = enemy.user;
 
-    const [{ skills }] = await this.pvpRepo.manager.query(`
-        SELECT skills
-        FROM preset
-        WHERE uid = ${enemyId}
-        AND id = ${presetId};
-      `);
+    // const [{ skills }] = await this.pvpRepo.manager.query(`
+    //     SELECT skills
+    //     FROM preset
+    //     WHERE uid = ${enemyId}
+    //     AND id = ${presetId};
+    //   `);
+
+    console.log('b');
+
+    const [{ skills }] = await this.presetRepo.find({
+      relations: ['skills'],
+      where: {
+        id: presetId,
+        uid: enemyId,
+      },
+    });
 
     return {
       ...enemy,
       user: {
         ...enemy.user,
-        skills: JSON.parse(skills),
+        skills: skills.map((s) => {
+          const { uid, amount, ...result } = s;
+          return result;
+        }),
       },
     };
   }

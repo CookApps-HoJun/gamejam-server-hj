@@ -20,7 +20,7 @@ export class Chest {
   @PrimaryColumn()
   uid: number;
 
-  @ManyToOne((type) => User, (user) => user.chests)
+  @ManyToOne((type) => User, (user) => user.chests, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'uid' })
   user: User;
 

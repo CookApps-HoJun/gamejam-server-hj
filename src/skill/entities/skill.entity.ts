@@ -1,3 +1,4 @@
+import { Preset } from 'src/preset/entities/preset.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
@@ -10,6 +11,8 @@ import {
   JoinColumn,
   RelationId,
   ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity({ name: 'skill' })
@@ -20,7 +23,7 @@ export class Skill {
   @PrimaryColumn()
   uid: number;
 
-  @ManyToOne((type) => User, (user) => user.presets)
+  @ManyToOne((type) => User, (user) => user.presets, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'uid' })
   user: User;
 
@@ -29,6 +32,11 @@ export class Skill {
 
   @Column()
   amount: number;
+
+  @ManyToMany((type) => Preset, (preset) => preset.skills, {
+    onDelete: 'CASCADE',
+  })
+  preset: Preset[];
 
   // @CreateDateColumn()
   // createdAt: Date;

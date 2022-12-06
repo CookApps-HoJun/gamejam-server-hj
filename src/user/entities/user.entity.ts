@@ -22,22 +22,27 @@ export class User {
   @Column()
   deviceId: string;
 
-  @OneToMany(() => Chest, (chest) => chest.user)
+  @Column({ default: 1 })
+  level: number;
+
+  @OneToMany(() => Chest, (chest) => chest.user, { cascade: true })
   chests: Chest[];
 
   @Column({ default: 1 })
   presetId: number;
 
-  @OneToMany(() => Preset, (preset) => preset.user)
+  @OneToMany(() => Preset, (preset) => preset.user, { cascade: true })
   presets: Preset[];
 
-  @OneToMany(() => Skill, (skill) => skill.user)
+  @OneToMany(() => Skill, (skill) => skill.user, { cascade: true })
   skills: Skill[];
 
-  @OneToOne(() => Pvp, (pvp) => pvp.user)
+  @OneToOne(() => Pvp, (pvp) => pvp.user, { cascade: true })
   pvp: Pvp;
 
-  @OneToMany(() => Character, (character) => character.user)
+  @OneToMany(() => Character, (character) => character.user, {
+    cascade: true,
+  })
   characters: Character[];
 
   @CreateDateColumn()

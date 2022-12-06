@@ -20,7 +20,7 @@ export class Character {
   @PrimaryColumn()
   uid: number;
 
-  @ManyToOne((type) => User, (user) => user.characters)
+  @ManyToOne((type) => User, (user) => user.characters, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'uid' })
   user: User;
 
