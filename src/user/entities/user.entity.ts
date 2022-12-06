@@ -23,6 +23,9 @@ export class User {
   @Column()
   deviceId: string;
 
+  @Column()
+  nickname: string;
+
   @Column({ default: 1 })
   level: number;
 

@@ -33,6 +33,7 @@ export class AppService implements OnApplicationBootstrap {
         .values(
           [...Array(10).keys()].map((n) => ({
             deviceId: `dummy#${n}`,
+            nickname: `dummy#${n}`,
           })),
         )
         .execute();
