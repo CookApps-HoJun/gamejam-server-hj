@@ -28,12 +28,39 @@ export class PvpService {
 
     const upperBound = userScore * 0.05;
 
-    const userPool = await this.pvpRepo.find({
+    let userPool = await this.pvpRepo.find({
       where: {
         score: Between(userScore - upperBound, userScore + upperBound),
         user: Not(uid),
       },
     });
+
+    if (!userPool.length) {
+      const [{ rank }] = await this.pvpRepo.manager.query(`
+        SELECT rank
+        FROM
+          (
+            SELECT 
+              @rownum:=@rownum+1  rank, 
+              pvp.* 
+            FROM 
+              pvp, 
+              (SELECT @ROWNUM := 0) R
+            ORDER BY
+              score desc
+          ) list
+        WHERE uid = ${uid} ;
+      `);
+
+      userPool = await this.pvpRepo.find({
+        where: {
+          user: Not(uid),
+        },
+        skip: Math.max(rank - 5, 0),
+        take: 10,
+      });
+      console.log(rank, userPool.length);
+    }
 
     const randomNumber = Math.floor(Math.random() * userPool.length);
 
