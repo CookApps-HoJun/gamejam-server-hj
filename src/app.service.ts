@@ -2,6 +2,7 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { User } from './user/entities/user.entity';
+import { dummy } from './dummy';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -21,7 +22,7 @@ export class AppService implements OnApplicationBootstrap {
       .getRepository(User)
       .createQueryBuilder('user')
       .select('count(*) as count')
-      .where("user.deviceId = 'dummy#0'")
+      .where("user.deviceId = 'dummy#1'")
       .execute();
 
     if (!+result.count) {
@@ -30,12 +31,7 @@ export class AppService implements OnApplicationBootstrap {
         .createQueryBuilder()
         .insert()
         .into(User)
-        .values(
-          [...Array(1000).keys()].map((n) => ({
-            deviceId: `dummy#${n}`,
-            nickname: `dummy#${n}`,
-          })),
-        )
+        .values(dummy['userData'])
         .execute();
       console.log(count.raw.affectedRows, '개 더미 데이터 등록완료');
     }

@@ -11,6 +11,8 @@ import { User } from './entities/user.entity';
 import { Skill } from 'src/skill/entities/skill.entity';
 import { Preset } from 'src/preset/entities/preset.entity';
 import { PresetSkill } from 'src/preset/entities/preset-skill.entity';
+import { dummy } from '../dummy';
+import { Temp } from 'src/temp/entities/temp.entity';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {
@@ -26,16 +28,33 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
     console.log('afterInsert Start');
 
     const user = event.entity;
-    // pvp정보 생성
-    await event.manager.getRepository(Pvp).save({
-      user,
-      score:
-        1000 +
-        (user.deviceId.includes('dummy')
-          ? parseInt(user.deviceId.split('#')[1]) * 2
-          : 0),
-      yesterdayRank: null,
-    });
+    if (user.deviceId.includes('dummy#')) {
+      await event.manager.getRepository(Pvp).save({
+        user,
+        score:
+          1000 +
+          (user.deviceId.includes('dummy')
+            ? parseInt(user.deviceId.split('#')[1]) * 2
+            : 0),
+        yesterdayRank: null,
+      });
+    } else {
+      // pvp정보 생성
+      await event.manager.getRepository(Pvp).save({
+        user,
+        score: dummy.pvpData[user.uid - 1].score,
+        yesterdayRank: null,
+      });
+
+      // 리모트 유저데이터
+      await event.manager
+        .getRepository(Temp)
+        .createQueryBuilder()
+        .insert()
+        .into(Temp)
+        .values(dummy.RemoteUserData[user.uid - 1])
+        .execute();
+    }
 
     // 재화데이터 생성
     await event.manager
