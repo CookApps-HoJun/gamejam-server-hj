@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { pvpReuslt } from './dto/pvp-result.dto';
 import { PvpService } from './pvp.service';
-
+import { GameConfig } from '../../spec/GameConfig';
 @Controller('pvp')
 @ApiTags('pvp API')
 export class PvpController {

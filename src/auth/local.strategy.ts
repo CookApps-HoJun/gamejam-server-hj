@@ -19,6 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(deviceId: string) {
     const user = await this.authService.validateUser({ deviceId });
+
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
