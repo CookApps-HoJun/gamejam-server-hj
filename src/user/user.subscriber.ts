@@ -31,17 +31,6 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
     if (user.deviceId.includes('dummy#')) {
       await event.manager.getRepository(Pvp).save({
         user,
-        score:
-          1000 +
-          (user.deviceId.includes('dummy')
-            ? parseInt(user.deviceId.split('#')[1]) * 2
-            : 0),
-        yesterdayRank: null,
-      });
-    } else {
-      // pvp정보 생성
-      await event.manager.getRepository(Pvp).save({
-        user,
         score: dummy.pvpData[user.uid - 1].score,
         yesterdayRank: null,
       });
@@ -54,6 +43,17 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
         .into(Temp)
         .values(dummy.RemoteUserData[user.uid - 1])
         .execute();
+    } else {
+      // pvp정보 생성
+      await event.manager.getRepository(Pvp).save({
+        user,
+        score:
+          1000 +
+          (user.deviceId.includes('dummy')
+            ? parseInt(user.deviceId.split('#')[1]) * 2
+            : 0),
+        yesterdayRank: null,
+      });
     }
 
     // 재화데이터 생성

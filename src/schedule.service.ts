@@ -11,7 +11,7 @@ export class ScheduleService {
   private readonly logger = new Logger(ScheduleService.name);
 
   @Cron('0 0 0 * * *', { name: 'cronTask' })
-  // @Interval(30000)
+  // @Interval(10000)
   async handleCron() {
     this.logger.debug('yesterday rank 갱신');
     await this.entityManager.query(`

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Preset } from 'src/preset/entities/preset.entity';
-import { In, Between, Repository, Not } from 'typeorm';
+import { In, Between, Repository, Not, Like, LessThanOrEqual } from 'typeorm';
 import { Pvp } from './entities/pvp.entity';
 import { PvpResult } from './entities/pvpResult.entity';
 
@@ -20,6 +20,19 @@ export class PvpService {
     return await this.pvpRepo.find({
       relations: ['user'],
       take: 100,
+      where: [
+        {
+          user: {
+            deviceId: Like('dummy#%'),
+          },
+          score: LessThanOrEqual(1200),
+        },
+        {
+          user: {
+            deviceId: Not(Like('dummy#%')),
+          },
+        },
+      ],
       order: {
         score: 'DESC',
       },
