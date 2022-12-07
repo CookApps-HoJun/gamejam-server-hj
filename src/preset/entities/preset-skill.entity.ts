@@ -22,10 +22,13 @@ export class PresetSkill {
   skillId: number;
 
   @PrimaryColumn()
+  skillUid: number;
+
+  @PrimaryColumn()
   presetId: number;
 
   @PrimaryColumn()
-  uid: number;
+  presetUid: number;
 
   @ManyToOne((type) => Preset)
   // @JoinColumn({ name: 'presetId' })
@@ -36,10 +39,6 @@ export class PresetSkill {
   // @JoinColumn({ name: 'skillId' })
   // @JoinColumn({ name: 'suid' })
   skill: Skill;
-
-  @ManyToOne((type) => User)
-  @JoinColumn({ name: 'uid' })
-  user: User;
 
   @Column()
   order: number;

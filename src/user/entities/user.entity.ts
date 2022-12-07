@@ -1,7 +1,6 @@
 import { Character } from 'src/character/entities/character.entity';
 import { Chest } from 'src/chest/entities/chest.entity';
 import { Currency } from 'src/currency/entities/currency.entity';
-import { PresetSkill } from 'src/preset/entities/preset-skill.entity';
 import { Preset } from 'src/preset/entities/preset.entity';
 import { Pvp } from 'src/pvp/entities/pvp.entity';
 import { Skill } from 'src/skill/entities/skill.entity';
@@ -38,11 +37,6 @@ export class User {
 
   @OneToMany(() => Preset, (preset) => preset.user, { cascade: true })
   presets: Preset[];
-
-  @OneToMany(() => PresetSkill, (presetSkill) => presetSkill.user, {
-    cascade: true,
-  })
-  presetSkill: PresetSkill[];
 
   @OneToMany(() => Skill, (skill) => skill.user, { cascade: true })
   skills: Skill[];

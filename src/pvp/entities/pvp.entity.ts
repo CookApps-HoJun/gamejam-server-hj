@@ -8,12 +8,14 @@ import {
   UpdateDateColumn,
   OneToOne,
   RelationId,
-  PrimaryColumn,
 } from 'typeorm';
 
 @Entity({ name: 'pvp' })
 export class Pvp {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @RelationId((pvp: Pvp) => pvp.user)
   uid: number;
 
   @OneToOne((type) => User, (user) => user.uid)

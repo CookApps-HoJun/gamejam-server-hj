@@ -1,6 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { GameConfig } from 'spec/GameConfig';
 import { EntityManager } from 'typeorm';
 import { User } from './user/entities/user.entity';
 
@@ -17,6 +16,7 @@ export class AppService implements OnApplicationBootstrap {
 
   async onApplicationBootstrap(): Promise<void> {
     console.log('onApplicationBootstrap');
+
     const [result] = await this.entityManager
       .getRepository(User)
       .createQueryBuilder('user')

@@ -5,15 +5,12 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginDto } from 'src/auth/dto/login.dto';
-import { PresetSkill } from 'src/preset/entities/preset-skill.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepo: Repository<User>,
-    @InjectRepository(PresetSkill)
-    private presetSkillRepo: Repository<PresetSkill>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -25,28 +22,10 @@ export class UserService {
   }
 
   async findOne(loginDto: LoginDto) {
-    const user = await this.userRepo.findOne({
+    return await this.userRepo.findOne({
       where: loginDto,
-      relations: ['currency', 'pvp', 'skills'],
+      relations: ['currency', 'pvp', 'presets', 'skills'],
     });
-
-    if (user) {
-      const presetSkill = (
-        await this.presetSkillRepo.find({
-          where: {
-            uid: user.uid,
-          },
-        })
-      ).reduce(
-        (acc, val) => {
-          acc[val.presetId][val.order - 1] = val.skillId;
-          return acc;
-        },
-        { 1: [], 2: [], 3: [] },
-      );
-      return { ...user, presetSkill };
-    }
-    return user;
   }
 
   update(uid: number, updateUserDto: UpdateUserDto) {

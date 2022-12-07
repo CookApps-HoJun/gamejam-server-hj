@@ -28,7 +28,6 @@ export class UserController {
     description: '유저를 생성한다.',
   })
   create(@Body() createUserDto: CreateUserDto) {
-    return 1;
     return this.userService.create(createUserDto);
   }
 

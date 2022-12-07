@@ -85,7 +85,6 @@ export class UserSubscriber implements EntitySubscriberInterface<User> {
     const presetSkill = [1, 2, 3]
       .map((i) =>
         [1, 2, 5, 6, 8, 9].map((s, j) => ({
-          user,
           preset: {
             user,
             id: i,
