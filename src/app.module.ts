@@ -13,6 +13,8 @@ import { CurrencyModule } from './currency/currency.module';
 import { CharacterModule } from './character/character.module';
 import { ChestModule } from './chest/chest.module';
 import { PresetModule } from './preset/preset.module';
+import { ScheduleService } from './schedule.service';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbConfig),
@@ -26,8 +28,9 @@ import { PresetModule } from './preset/preset.module';
     CharacterModule,
     ChestModule,
     PresetModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ScheduleService],
 })
 export class AppModule {}
