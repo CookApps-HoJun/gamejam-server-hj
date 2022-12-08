@@ -12,13 +12,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     private userService: UserService,
   ) {
     super({
-      usernameField: 'deviceId',
-      passwordField: 'deviceId',
+      usernameField: 'dId',
+      passwordField: 'dId',
     });
   }
 
-  async validate(deviceId: string) {
-    const user = await this.authService.validateUser({ deviceId });
+  async validate(dId: string) {
+    const user = await this.authService.validateUser({ dId });
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
