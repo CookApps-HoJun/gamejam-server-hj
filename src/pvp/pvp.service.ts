@@ -47,7 +47,7 @@ export class PvpService {
       },
     });
 
-    const [{ rank }] = await this.pvpRepo.manager.query(`
+    const [{ rank, yesterdayRank }] = await this.pvpRepo.manager.query(`
       SELECT *
       FROM
         (
@@ -91,7 +91,7 @@ export class PvpService {
       };
     });
     return {
-      myRank: rank,
+      myRank: { rank, yesterdayRank },
       rankData: a,
     };
   }
