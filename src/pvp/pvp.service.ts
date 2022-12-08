@@ -48,19 +48,29 @@ export class PvpService {
     });
 
     const [{ rank }] = await this.pvpRepo.manager.query(`
-        SELECT rank
-        FROM
-          (
-            SELECT 
-              @rownum:=@rownum+1  rank, 
-              pvp.* 
-            FROM 
-              pvp, 
-              (SELECT @ROWNUM := 0) R
-            ORDER BY
-              score desc
-          ) list
-        WHERE uid = ${uid} ;
+      SELECT *
+      FROM
+        (
+          SELECT 
+            @rownum:=@rownum+1  rank, 
+            p.* 
+          FROM 
+            (
+              SELECT pvp.* from pvp 
+              LEFT JOIN user
+              ON pvp.uid = user.uid
+              WHERE
+                (
+                  deviceId LIKE 'dummy#%'
+                  AND
+                  score <= 1200
+                )
+              OR deviceId NOT LIKE 'dummy#%'
+            ) p, 
+            (SELECT @ROWNUM := 0) R
+          ORDER BY score desc
+        ) list
+        WHERE uid = ${uid}
       `);
 
     console.log(rank);
