@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Preset } from 'src/preset/entities/preset.entity';
+import { Temp } from 'src/temp/entities/temp.entity';
 import { In, Between, Repository, Not, Like, LessThanOrEqual } from 'typeorm';
 import { Pvp } from './entities/pvp.entity';
 import { PvpResult } from './entities/pvpResult.entity';
@@ -12,14 +13,13 @@ export class PvpService {
     private pvpRepo: Repository<Pvp>,
     @InjectRepository(Preset)
     private presetRepo: Repository<Preset>,
-    @InjectRepository(PvpResult)
-    private pvpResultRepo: Repository<PvpResult>,
+    @InjectRepository(Temp)
+    private tempResultRepo: Repository<Temp>,
   ) {}
 
-  async getRank() {
-    return await this.pvpRepo.find({
-      relations: ['user'],
-      take: 100,
+  async getRank(uid) {
+    let result = await this.pvpRepo.find({
+      take: 10,
       where: [
         {
           user: {
@@ -37,6 +37,38 @@ export class PvpService {
         score: 'DESC',
       },
     });
+
+    const uids = result.map((r) => r.uid);
+
+    const userDatas = await this.tempResultRepo.find({
+      where: {
+        uid: In(uids),
+        type: 'UserData',
+      },
+    });
+
+    const [{ rank }] = await this.pvpRepo.manager.query(`
+        SELECT rank
+        FROM
+          (
+            SELECT 
+              @rownum:=@rownum+1  rank, 
+              pvp.* 
+            FROM 
+              pvp, 
+              (SELECT @ROWNUM := 0) R
+            ORDER BY
+              score desc
+          ) list
+        WHERE uid = ${uid} ;
+      `);
+
+    console.log(rank);
+
+    return {
+      myRank: rank,
+      rankData: result.map((r) => userDatas.filter((u) => u.uid === r.uid)[0]),
+    };
   }
 
   async getEnemy(uid: number) {

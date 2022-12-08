@@ -17,7 +17,8 @@ export class PvpController {
     description: '100위까지의 랭킹을 조회한다.',
   })
   getRank(@Req() req) {
-    return this.pvpService.getRank();
+    const { uid } = req.user;
+    return this.pvpService.getRank(uid);
   }
 
   @UseGuards(JwtAuthGuard)
