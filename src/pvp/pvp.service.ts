@@ -127,7 +127,7 @@ export class PvpService {
 
     return {
       pBefore: userPbefore,
-      pAfter: userPbefore + Math.round(k * (w - we)),
+      pAfter: Math.max(userPbefore + Math.round(k * (w - we)), 1000), //1000점 밑으로 안떨어지게
     };
   }
 
