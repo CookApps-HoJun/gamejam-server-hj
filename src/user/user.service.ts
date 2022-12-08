@@ -23,7 +23,7 @@ export class UserService {
 
   async findOne(loginDto: LoginDto) {
     return await this.userRepo.findOne({
-      where: loginDto,
+      where: { deviceId: loginDto.dId },
       relations: ['currency', 'pvp', 'presets', 'skills'],
     });
   }

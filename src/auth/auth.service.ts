@@ -15,7 +15,6 @@ export class AuthService {
 
     if (!user) {
       user = await this.userService.create({
-        ...loginDto,
         deviceId: loginDto.dId,
       });
     }
