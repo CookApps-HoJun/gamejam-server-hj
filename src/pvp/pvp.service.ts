@@ -43,7 +43,7 @@ export class PvpService {
     const userDatas = await this.tempResultRepo.find({
       where: {
         uid: In(uids),
-        type: 'UserData',
+        type: In(['UserData', 'RemoteUserData']),
       },
     });
 
@@ -73,11 +73,26 @@ export class PvpService {
         WHERE uid = ${uid}
       `);
 
-    console.log(rank);
+    // console.log(result);
+    // console.log('--');
+    // console.log(userDatas);
 
+    const a = result.map((r) => {
+      const u = userDatas
+        .map((u) => ({
+          ...uid,
+          data: JSON.parse(u.data),
+        }))
+        .filter((u) => r.uid === u.data.uid)[0];
+      return {
+        ...r,
+        nickname: u.data.nickName ? u.data.nickName : u.data.nickname,
+        cid: +(u.data.cid ? u.data.cid : u.data.cid),
+      };
+    });
     return {
       myRank: rank,
-      rankData: result.map((r) => userDatas.filter((u) => u.uid === r.uid)[0]),
+      rankData: a,
     };
   }
 

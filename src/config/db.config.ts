@@ -2,7 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const dbConfig: TypeOrmModuleOptions = {
   type: 'mysql', //Database 설정
-  host: 'mysql',
+  host: '15.164.218.52',
   port: 3306,
   username: 'bmserver',
   password: 'abcd1234',
