@@ -46,7 +46,7 @@ export class PvpController {
     const { uid } = req.user;
     const { enemy, result, keepPvp } = dto;
     const score = await this.pvpService.calcScore(uid, enemy, result);
-    const enemyScore = await this.pvpService.calcScore(uid, enemy, result);
+    const enemyScore = await this.pvpService.calcScore(uid, enemy, !result);
 
     await this.pvpService.updateScore(uid, score.pAfter);
     await this.pvpService.updateScore(enemy, enemyScore.pAfter);
