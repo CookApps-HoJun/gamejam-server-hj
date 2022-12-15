@@ -135,6 +135,9 @@ export class PvpService {
         where: {
           user: Not(uid),
         },
+        order: {
+          score: 'DESC',
+        },
         skip: Math.max(rank - 5, 0),
         take: 10,
       });
